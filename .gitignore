@@ -1,0 +1,16 @@
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+CMakeFiles
+memcapable
+memaslap
+memslap
+memtier_benchmark
+.*.swp
+*~
+test/var
+*.pyc
+*.reject
+00000*
+*.so
+*.dylib
