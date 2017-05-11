@@ -138,11 +138,32 @@ bool node_is_value(rapidxml::xml_node<> *node) {
   return false;
 }
 
+bool node_is_simple_value(rapidxml::xml_node<> *node) {
+  if (node == 0)
+    return false;
+
+  rapidxml::xml_node<> *child = node->first_node();
+
+  if (child == 0)
+    return false;
+
+  if (child->first_node() != 0)
+    return false;
+
+  if (child->name_size() != 0)
+    return false;
+
+  if (child->value_size() > 0)
+    return true;
+
+  return false;
+}
 
 bool add_node(struct lua_State *L, rapidxml::xml_node<> * node);
 bool add_dict_node(struct lua_State *L, rapidxml::xml_node<> * node);
 bool add_list_node(struct lua_State *L, rapidxml::xml_node<> * node);
 bool add_value_node(struct lua_State *L, rapidxml::xml_node<> * node);
+bool add_simple_value_node(struct lua_State *L, rapidxml::xml_node<> * node);
 
 bool add_value_node(struct lua_State *L, rapidxml::xml_node<> * node) {
   char buf[64];
@@ -158,17 +179,17 @@ bool add_value_node(struct lua_State *L, rapidxml::xml_node<> * node) {
 
   strncpy(buf, type->value(), type->value_size());
   buf[type->value_size()] = 0;
-  printf("type: %s\n", buf);
 
   if (strncmp(type->value(), "Integer", type->value_size()) == 0) {
-    printf("integer\n");
     if (value->value_size() > sizeof(buf))
       return false;
 
     strncpy(buf, value->value(), value->value_size());
     buf[value->value_size()] = 0;
 
+    errno = 0;
     long val = strtol(buf, 0, 10);
+
     if (errno == ERANGE or errno == EINVAL)
       return false;
 
@@ -176,7 +197,6 @@ bool add_value_node(struct lua_State *L, rapidxml::xml_node<> * node) {
     return true;
   }
   else if (strncmp(type->value(), "Double", type->value_size()) == 0) {
-    printf("double\n");
     if (value->value_size() > sizeof(buf))
       return false;
 
@@ -184,6 +204,7 @@ bool add_value_node(struct lua_State *L, rapidxml::xml_node<> * node) {
     strncpy(buf, value->value(), value->value_size());
     buf[value->value_size()] = 0;
 
+    errno = 0;
     double val = strtod(buf, 0);
     if (errno == ERANGE or errno == EINVAL)
       return false;
@@ -216,6 +237,21 @@ bool add_value_node(struct lua_State *L, rapidxml::xml_node<> * node) {
   return false;
 }
 
+bool add_simple_value_node(struct lua_State *L, rapidxml::xml_node<> * node) {
+  if (node == 0)
+    return false;
+
+  rapidxml::xml_node<> *child = node->first_node();
+
+  if (child == 0)
+    return false;
+
+  lua_pushlstring(L, child->value(), child->value_size());
+
+  return true;
+}
+
+
 bool add_list_node(struct lua_State *L, rapidxml::xml_node<> * node) {
   if (node == 0)
     return false;
@@ -245,11 +281,13 @@ bool add_dict_node(struct lua_State *L, rapidxml::xml_node<> * node) {
   lua_newtable(L);
 
   rapidxml::xml_node<> *child = node->first_node();
+  int num_children = 0;
   while (child != 0) {
     lua_pushlstring(L, child->name(), child->name_size());
     bool res = add_node(L, child);
 
     if (res) {
+      num_children++;
       lua_settable(L, -3);
     }
     else {
@@ -257,6 +295,11 @@ bool add_dict_node(struct lua_State *L, rapidxml::xml_node<> * node) {
     }
 
     child = child->next_sibling();
+  }
+
+  if (num_children == 0) {
+    lua_pop(L, 1);
+    return false;
   }
 
   return true;
@@ -267,9 +310,8 @@ bool add_node(struct lua_State *L, rapidxml::xml_node<> * node) {
   if (node == 0)
     return false;
 
-  if (node->first_node() == 0) {
-    lua_newtable(L);
-    return true;
+  if (node_is_simple_value(node)) {
+    return add_simple_value_node(L, node);
   }
 
   if (node_is_value(node)) {
@@ -278,6 +320,10 @@ bool add_node(struct lua_State *L, rapidxml::xml_node<> * node) {
 
   if (node_is_list(node)) {
     return add_list_node(L, node);
+  }
+
+  if (node->first_node() == 0) {
+    return false;
   }
 
   return add_dict_node(L, node);
@@ -317,6 +363,10 @@ extern "C" {
         lua_pushstring(L, "foo");
         lua_pushstring(L, "bar");
         lua_settable(L, -3);*/
+        return 1;
+      }
+      else {
+        lua_newtable(L);
         return 1;
       }
     }

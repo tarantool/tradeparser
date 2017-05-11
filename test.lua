@@ -37,9 +37,19 @@ test_xml([[
 ]])
 
 test_xml([[
+<xml>baz</xml>
+]])
+
+test_xml([[
 <xml>
 <foo>
 </foo>
+</xml>
+]])
+
+test_xml([[
+<xml>
+<foo>qux</foo>
 </xml>
 ]])
 
@@ -51,6 +61,14 @@ test_xml([[
 </foo>
 </xml>
 ]])
+
+test_xml([[
+<xml>
+<foo>frob1</foo>
+<foo>frob2</foo>
+</xml>
+]])
+
 
 test_xml([[
 <Cakes>
@@ -153,4 +171,34 @@ test_xml([[
 <Value>2017-03-05</Value>
 </foo>
 </xml>
+]])
+
+
+test_xml([[
+<AssetFlow>
+    <id>
+        <ParameterName>Идентификатор</ParameterName>
+        <ParameterNameEng>ID</ParameterNameEng>
+        <Type>Integer</Type>
+        <Value>28652089</Value>
+        <ValueDisplayed>28652089</ValueDisplayed>
+        <ValueDisplayedEng>28652089</ValueDisplayedEng>
+    </id>
+    <FlowType>
+        <ParameterName>Тип обязательства</ParameterName>
+        <ParameterNameEng>Flow Type</ParameterNameEng>
+        <Type>Integer</Type>
+        <Value>3</Value>
+        <ValueDisplayed>Physical</ValueDisplayed>
+        <ValueDisplayedEng>Physical</ValueDisplayedEng>
+    </FlowType>
+    <Underlying>
+        <ParameterName>Инструмент</ParameterName>
+        <ParameterNameEng>Instrument</ParameterNameEng>
+        <Type>Integer</Type>
+        <Value>194382</Value>
+        <ValueDisplayed>TITIM 6 09/30/34</ValueDisplayed>
+        <ValueDisplayedEng>TITIM 6 09/30/34</ValueDisplayedEng>
+    </Underlying>
+</AssetFlow>
 ]])
