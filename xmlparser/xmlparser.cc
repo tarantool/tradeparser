@@ -359,10 +359,6 @@ extern "C" {
 
       bool res = add_node(L, &doc);
       if (res) {
-        /*        lua_newtable(L);
-        lua_pushstring(L, "foo");
-        lua_pushstring(L, "bar");
-        lua_settable(L, -3);*/
         return 1;
       }
       else {
