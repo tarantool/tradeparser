@@ -5,5 +5,6 @@ local function parse(a)
 end
 
 return {
-    parse = parse;
+    parse = clib.parse,
+    iso8601_to_timestamp = clib.iso8601_to_timestamp
 }
