@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
-project(xmlparser CXX)
+project(tradeparser CXX)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE RelWithDebInfo)
@@ -26,7 +26,7 @@ if (APPLE)
 endif(APPLE)
 
 # Build module
-add_subdirectory(xmlparser)
+add_subdirectory(tradeparser)
 
 enable_testing()
 

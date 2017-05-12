@@ -1,4 +1,4 @@
-local clib = require('xmlparser.lib')
+local clib = require('tradeparser.lib')
 
 local function parse(a)
     return clib.parse(a)

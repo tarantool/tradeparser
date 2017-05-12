@@ -1,23 +1,23 @@
 #!/usr/bin/env tarantool
 
-local xmlparser = require 'xmlparser'
+local tradeparser = require 'tradeparser'
 local json = require 'json'
 local tap = require('tap')
 
-local test = tap.test('xmlparser')
-test:plan(22)
+local test = tap.test('tradeparser')
+test:plan(24)
 
 local function test_iso8601(str, result)
-    local ts = xmlparser.iso8601_to_timestamp(str)
+    local ts = tradeparser.iso8601_to_timestamp(str)
     local res = os.date("!%Y-%m-%dT%TZ",ts)
     test:is(res, result, "date: " .. result)
 end
 
-local function test_xml(str, result)
-    local parsed = xmlparser.parse(str, nil)
+local function test_xml(str, result, path)
+    local parsed = tradeparser.parse(str, path)
     local encoded = json.encode(parsed)
 
-    test:is(encoded, result, "xml: " .. result)
+    test:is(encoded, result, "xml: " .. tostring(result))
 end
 
 
@@ -69,20 +69,20 @@ test_xml([[
 
 
 test_xml([[
-    <Cakes>
-        <cake>
-        </cake>
-    </Cakes>]],
-    '{"Cakes":[]}')
+<Cakes>
+    <cake>
+    </cake>
+</Cakes>]],
+'{"Cakes":[]}')
 
 
 test_xml([[
-    <xml>
-        <foo>
-            <Type>Integer</Type>
-            <Value>1</Value>
-        </foo>
-    </xml>]],
+<xml>
+    <foo>
+        <Type>Integer</Type>
+        <Value>1</Value>
+    </foo>
+</xml>]],
 '{"xml":{"foo":1}}')
 
 test_xml([[
@@ -146,29 +146,28 @@ test_xml([[
 
 test_xml([[
 <xml>
-<foo>
-<Type>String</Type>
-<Value>Строка с UTF-8 символами</Value>
-</foo>
-</xml>
-]],
+    <foo>
+        <Type>String</Type>
+        <Value>Строка с UTF-8 символами</Value>
+    </foo>
+</xml>]],
 '{"xml":{"foo":"Строка с UTF-8 символами"}}')
 
 
 test_xml([[
 <xml>
-<foo>
-<Type>DateTime</Type>
-<Value>2017-03-05T00:00:00+03:00</Value>
-</foo>
-<foo>
-<Type>DateTime</Type>
-<Value>2017-03-05T00:00:00</Value>
-</foo>
-<foo>
-<Type>DateTime</Type>
-<Value>2017-03-05</Value>
-</foo>
+    <foo>
+        <Type>DateTime</Type>
+        <Value>2017-03-05T00:00:00+03:00</Value>
+    </foo>
+    <foo>
+        <Type>DateTime</Type>
+        <Value>2017-03-05T00:00:00</Value>
+    </foo>
+    <foo>
+        <Type>DateTime</Type>
+        <Value>2017-03-05</Value>
+    </foo>
 </xml>
 ]],
 '{"xml":[1488661200,1488672000,1488672000]}')
@@ -202,6 +201,27 @@ test_xml([[
     </Underlying>
 </AssetFlow>
 ]],
-    '{"AssetFlow":{"FlowType":3,"Underlying":194382,"id":28652089}}')
+'{"AssetFlow":{"FlowType":3,"Underlying":194382,"id":28652089}}')
+
+test_xml([[
+<xml>
+    <foo>
+        <bar>qux</bar>
+    </foo>
+</xml>]],
+'{"bar":"qux"}',
+'xml.foo'
+)
+
+test_xml([[
+<xml>
+    <foo>
+        <bar>qux</bar>
+    </foo>
+</xml>]],
+'null',
+'xml.bar'
+)
+
 
 os.exit(test:check() == true and 0 or -1)

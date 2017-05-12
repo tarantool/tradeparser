@@ -3,7 +3,7 @@ if (APPLE)
 endif(APPLE)
 
 # Add C library
-add_library(lib SHARED xmlparser.cc)
+add_library(lib SHARED tradeparser.cc)
 target_link_libraries(lib ${MSGPUCK_LIBRARIES})
 set_target_properties(lib PROPERTIES PREFIX "" OUTPUT_NAME "lib")
 

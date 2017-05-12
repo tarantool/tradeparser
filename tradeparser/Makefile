@@ -48,10 +48,10 @@ RM = /usr/local/Cellar/cmake/3.8.0/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/knazarov/dev/tarantool/xmlparser
+CMAKE_SOURCE_DIR = /Users/knazarov/dev/tarantool/tradeparser
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/knazarov/dev/tarantool/xmlparser
+CMAKE_BINARY_DIR = /Users/knazarov/dev/tarantool/tradeparser
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -137,14 +137,14 @@ test/fast: test
 
 # The main all target
 all: cmake_check_build_system
-	cd /Users/knazarov/dev/tarantool/xmlparser && $(CMAKE_COMMAND) -E cmake_progress_start /Users/knazarov/dev/tarantool/xmlparser/CMakeFiles /Users/knazarov/dev/tarantool/xmlparser/xmlparser/CMakeFiles/progress.marks
-	cd /Users/knazarov/dev/tarantool/xmlparser && $(MAKE) -f CMakeFiles/Makefile2 xmlparser/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/knazarov/dev/tarantool/xmlparser/CMakeFiles 0
+	cd /Users/knazarov/dev/tarantool/tradeparser && $(CMAKE_COMMAND) -E cmake_progress_start /Users/knazarov/dev/tarantool/tradeparser/CMakeFiles /Users/knazarov/dev/tarantool/tradeparser/tradeparser/CMakeFiles/progress.marks
+	cd /Users/knazarov/dev/tarantool/tradeparser && $(MAKE) -f CMakeFiles/Makefile2 tradeparser/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/knazarov/dev/tarantool/tradeparser/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /Users/knazarov/dev/tarantool/xmlparser && $(MAKE) -f CMakeFiles/Makefile2 xmlparser/clean
+	cd /Users/knazarov/dev/tarantool/tradeparser && $(MAKE) -f CMakeFiles/Makefile2 tradeparser/clean
 .PHONY : clean
 
 # The main clean target
@@ -154,60 +154,60 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /Users/knazarov/dev/tarantool/xmlparser && $(MAKE) -f CMakeFiles/Makefile2 xmlparser/preinstall
+	cd /Users/knazarov/dev/tarantool/tradeparser && $(MAKE) -f CMakeFiles/Makefile2 tradeparser/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /Users/knazarov/dev/tarantool/xmlparser && $(MAKE) -f CMakeFiles/Makefile2 xmlparser/preinstall
+	cd /Users/knazarov/dev/tarantool/tradeparser && $(MAKE) -f CMakeFiles/Makefile2 tradeparser/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /Users/knazarov/dev/tarantool/xmlparser && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/knazarov/dev/tarantool/tradeparser && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
-xmlparser/CMakeFiles/lib.dir/rule:
-	cd /Users/knazarov/dev/tarantool/xmlparser && $(MAKE) -f CMakeFiles/Makefile2 xmlparser/CMakeFiles/lib.dir/rule
-.PHONY : xmlparser/CMakeFiles/lib.dir/rule
+tradeparser/CMakeFiles/lib.dir/rule:
+	cd /Users/knazarov/dev/tarantool/tradeparser && $(MAKE) -f CMakeFiles/Makefile2 tradeparser/CMakeFiles/lib.dir/rule
+.PHONY : tradeparser/CMakeFiles/lib.dir/rule
 
 # Convenience name for target.
-lib: xmlparser/CMakeFiles/lib.dir/rule
+lib: tradeparser/CMakeFiles/lib.dir/rule
 
 .PHONY : lib
 
 # fast build rule for target.
 lib/fast:
-	cd /Users/knazarov/dev/tarantool/xmlparser && $(MAKE) -f xmlparser/CMakeFiles/lib.dir/build.make xmlparser/CMakeFiles/lib.dir/build
+	cd /Users/knazarov/dev/tarantool/tradeparser && $(MAKE) -f tradeparser/CMakeFiles/lib.dir/build.make tradeparser/CMakeFiles/lib.dir/build
 .PHONY : lib/fast
 
-xmlparser.o: xmlparser.cc.o
+tradeparser.o: tradeparser.cc.o
 
-.PHONY : xmlparser.o
+.PHONY : tradeparser.o
 
 # target to build an object file
-xmlparser.cc.o:
-	cd /Users/knazarov/dev/tarantool/xmlparser && $(MAKE) -f xmlparser/CMakeFiles/lib.dir/build.make xmlparser/CMakeFiles/lib.dir/xmlparser.cc.o
-.PHONY : xmlparser.cc.o
+tradeparser.cc.o:
+	cd /Users/knazarov/dev/tarantool/tradeparser && $(MAKE) -f tradeparser/CMakeFiles/lib.dir/build.make tradeparser/CMakeFiles/lib.dir/tradeparser.cc.o
+.PHONY : tradeparser.cc.o
 
-xmlparser.i: xmlparser.cc.i
+tradeparser.i: tradeparser.cc.i
 
-.PHONY : xmlparser.i
+.PHONY : tradeparser.i
 
 # target to preprocess a source file
-xmlparser.cc.i:
-	cd /Users/knazarov/dev/tarantool/xmlparser && $(MAKE) -f xmlparser/CMakeFiles/lib.dir/build.make xmlparser/CMakeFiles/lib.dir/xmlparser.cc.i
-.PHONY : xmlparser.cc.i
+tradeparser.cc.i:
+	cd /Users/knazarov/dev/tarantool/tradeparser && $(MAKE) -f tradeparser/CMakeFiles/lib.dir/build.make tradeparser/CMakeFiles/lib.dir/tradeparser.cc.i
+.PHONY : tradeparser.cc.i
 
-xmlparser.s: xmlparser.cc.s
+tradeparser.s: tradeparser.cc.s
 
-.PHONY : xmlparser.s
+.PHONY : tradeparser.s
 
 # target to generate assembly for a file
-xmlparser.cc.s:
-	cd /Users/knazarov/dev/tarantool/xmlparser && $(MAKE) -f xmlparser/CMakeFiles/lib.dir/build.make xmlparser/CMakeFiles/lib.dir/xmlparser.cc.s
-.PHONY : xmlparser.cc.s
+tradeparser.cc.s:
+	cd /Users/knazarov/dev/tarantool/tradeparser && $(MAKE) -f tradeparser/CMakeFiles/lib.dir/build.make tradeparser/CMakeFiles/lib.dir/tradeparser.cc.s
+.PHONY : tradeparser.cc.s
 
 # Help Target
 help:
@@ -223,9 +223,9 @@ help:
 	@echo "... install/local"
 	@echo "... test"
 	@echo "... lib"
-	@echo "... xmlparser.o"
-	@echo "... xmlparser.i"
-	@echo "... xmlparser.s"
+	@echo "... tradeparser.o"
+	@echo "... tradeparser.i"
+	@echo "... tradeparser.s"
 .PHONY : help
 
 
@@ -237,6 +237,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /Users/knazarov/dev/tarantool/xmlparser && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/knazarov/dev/tarantool/tradeparser && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

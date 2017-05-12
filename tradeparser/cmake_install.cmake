@@ -1,4 +1,4 @@
-# Install script for directory: /Users/knazarov/dev/tarantool/xmlparser/xmlparser
+# Install script for directory: /Users/knazarov/dev/tarantool/tradeparser/tradeparser
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -28,18 +28,18 @@ if(NOT CMAKE_INSTALL_COMPONENT)
 endif()
 
 if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/tarantool/xmlparser" TYPE FILE FILES "/Users/knazarov/dev/tarantool/xmlparser/xmlparser/init.lua")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/tarantool/tradeparser" TYPE FILE FILES "/Users/knazarov/dev/tarantool/tradeparser/tradeparser/init.lua")
 endif()
 
 if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/tarantool/xmlparser" TYPE SHARED_LIBRARY FILES "/Users/knazarov/dev/tarantool/xmlparser/xmlparser/lib.dylib")
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tarantool/xmlparser/lib.dylib" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tarantool/xmlparser/lib.dylib")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/tarantool/tradeparser" TYPE SHARED_LIBRARY FILES "/Users/knazarov/dev/tarantool/tradeparser/tradeparser/lib.dylib")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tarantool/tradeparser/lib.dylib" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tarantool/tradeparser/lib.dylib")
     execute_process(COMMAND "/usr/bin/install_name_tool"
       -id "lib.dylib"
-      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tarantool/xmlparser/lib.dylib")
+      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tarantool/tradeparser/lib.dylib")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tarantool/xmlparser/lib.dylib")
+      execute_process(COMMAND "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tarantool/tradeparser/lib.dylib")
     endif()
   endif()
 endif()

@@ -1,9 +1,13 @@
-#include "rapidxml.hpp"
 #include <string>
 #include <list>
+#include <map>
 #include <algorithm>
+#include <sstream>
 #include <time.h>
 #include <stdlib.h>
+#include <iostream>
+
+#include "rapidxml.hpp"
 
 extern "C" {
   #include <lua.h>
@@ -12,15 +16,41 @@ extern "C" {
   #include <tarantool/module.h>
 }
 
-static const char *prefix_array[] = {"NS1:Envelope", "NS1:Body", "ns4:WSIBConnect",
-                                     "message", "body"};
+typedef std::list<std::string> Path;
+typedef std::map<std::string, Path> PathMap;
 
-static std::list<std::string> prefix(
-    prefix_array,
-    prefix_array + sizeof(prefix_array) / sizeof(*prefix_array));
-
-
+static PathMap path_cache;
 static rapidxml::xml_document<> doc;
+
+Path path_split(const std::string &s) {
+    Path elems;
+    std::back_insert_iterator<Path> result = std::back_inserter(elems);
+
+    std::stringstream ss;
+    ss.str(s);
+    std::string item;
+    while (std::getline(ss, item, '.')) {
+        *(result++) = item;
+    }
+
+    return elems;
+}
+
+const Path& get_path(const char* raw_str) {
+  std::string str(raw_str);
+  PathMap::iterator i = path_cache.find(str);
+
+  if (i != path_cache.end()) {
+    return i->second;
+  }
+
+  Path path = path_split(str);
+
+  std::pair<PathMap::iterator, bool> res = path_cache.insert(std::make_pair(str, path));
+
+  return res.first->second;
+}
+
 
 
 time_t iso8601_to_timestamp(const char* str, size_t len) {
@@ -63,6 +93,33 @@ time_t iso8601_to_timestamp(const char* str, size_t len) {
     timestamp = mktime(&time);
 
   return timestamp;
+}
+
+rapidxml::xml_node<>* descend(rapidxml::xml_node<>* node, const Path &path) {
+  if (node == 0)
+    return 0;
+
+  if (path.size() == 0)
+    return node;
+
+  for (Path::const_iterator i = path.begin(); i != path.end(); ++i) {
+    const std::string &str = *i;
+
+    node = node->first_node(str.c_str());
+
+    if (node == 0)
+      return 0;
+  }
+
+  return node;
+}
+
+void print_path(const Path& path) {
+  Path::const_iterator iter;
+  for (iter = path.begin(); iter != path.end(); iter++) {
+    if (iter != path.begin()) std::cout << ", ";
+    std::cout << *iter;
+  }
 }
 
 bool node_is_list(rapidxml::xml_node<>* node) {
@@ -338,17 +395,19 @@ extern "C" {
     if (lua_gettop(L) == 0)
       luaL_error(L, "Usage: parse(str: string, str: path)");
 
-    const char* path = 0;
+    const char* path_str = "";
     const char* str = lua_tostring(L, 1);
 
     if (str == NULL)
       luaL_error(L, "Usage: parse(str: string, str: path)");
 
     if (lua_gettop(L) == 2) {
-      path = lua_tostring(L, 1);
-      if (str == NULL)
-        luaL_error(L, "Usage: parse(str: string, str: path)");
+      const char* path_arg = lua_tostring(L, 2);
+      if (path_arg != 0)
+        path_str = path_arg;
     }
+
+    const Path& path = get_path(path_str);
 
     try {
       doc.parse<rapidxml::parse_non_destructive>(const_cast<char*>(str));
@@ -356,8 +415,12 @@ extern "C" {
       rapidxml::xml_node<> *node = 0;
 
       node = doc.first_node();
+      node = descend(&doc, path);
 
-      bool res = add_node(L, &doc);
+      if (node == 0)
+        return 0;
+
+      bool res = add_node(L, node);
       if (res) {
         return 1;
       }
@@ -367,7 +430,7 @@ extern "C" {
       }
     }
     catch (rapidxml::parse_error & ex) {
-      printf("%s\n", ex.what());
+      luaL_error(L, ex.what());
     }
 
     return 0;
@@ -392,7 +455,7 @@ extern "C" {
 
 
   LUA_API int
-  luaopen_xmlparser_lib(lua_State *L)
+  luaopen_tradeparser_lib(lua_State *L)
   {
     lua_newtable(L);
     static const struct luaL_Reg meta [] = {
