@@ -5,12 +5,21 @@ import random
 import datetime
 import sys
 import os
+import random
 
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
 fake = faker.Factory.create()
 fake_local = faker.Factory.create('ru_RU')
+fake_local.random.seed(1)
+
+nickname_random = random.Random()
+nickname_random.seed(1)
+
+def user_name():
+    return "user" + str(nickname_random.randint(1, 1000000))
+
 
 def prettify(elem):
     """Return a pretty-printed XML string for the Element.
@@ -179,13 +188,13 @@ def generate_fx():
         'Сделка без ГС',
         'Without Master Agreement')
 
-    val(top, 'Participants.Buyer.BuyerNickName', fake_local.profile()['username'],
+    val(top, 'Participants.Buyer.BuyerNickName', user_name(),
         'Покупатель',
         'Buyer',
         'Покупатель',
         'Buyer')
 
-    val(top, 'Participants.Seller.SellerNickName', fake_local.profile()['username'],
+    val(top, 'Participants.Seller.SellerNickName', user_name(),
         'Продавец',
         'Seller',
         'Продавец',
@@ -436,13 +445,13 @@ def generate_fx_fwd():
         'Корп. выпл.: возврат платежом',
         'Corp. Paym: as CashFlow')
 
-    val(top, 'Participants.Buyer.BuyerNickName', fake_local.profile()['username'],
+    val(top, 'Participants.Buyer.BuyerNickName', user_name(),
         'Покупатель',
         'Buyer',
         'Покупатель',
         'Buyer')
 
-    val(top, 'Participants.Seller.SellerNickName', fake_local.profile()['username'],
+    val(top, 'Participants.Seller.SellerNickName', user_name(),
         'Продавец',
         'Seller',
         'Продавец',
@@ -952,13 +961,13 @@ def generate_eq_fwd():
         'Корп. выпл.: возврат платежом',
         'Corp. Paym: as CashFlow')
 
-    val(top, 'Participants.Buyer.BuyerNickName', fake_local.profile()['username'],
+    val(top, 'Participants.Buyer.BuyerNickName', user_name(),
         'Покупатель',
         'Buyer',
         'Покупатель',
         'Buyer')
 
-    val(top, 'Participants.Seller.SellerNickName', fake_local.profile()['username'],
+    val(top, 'Participants.Seller.SellerNickName', user_name(),
         'Продавец',
         'Seller',
         'Продавец',
@@ -1356,6 +1365,19 @@ def generate_eq_fwd():
 
     return prettify(top)
 
+def generate_counterparty():
+    counterparty = {
+        "NickName": user_name(),
+        "FullName": fake_local.name(),
+        "Delivery": fake.pybool(),
+        "PNLCnv": fake.pybool(),
+        "Test": fake.pybool(),
+        "BO": fake.pybool(),
+        "CLS": fake.pybool()
+    }
+
+    return counterparty
+
 def usage():
     print("gen.py fx|fx_fwd|eq_fwd")
     os.exit(1)
@@ -1370,6 +1392,8 @@ def main():
         print(generate_fx_fwd())
     elif sys.argv[1] == 'eq_fwd':
         print(generate_eq_fwd())
+    elif sys.argv[1] == 'counterparty':
+        print(generate_counterparty())
     else:
         usage()
 
