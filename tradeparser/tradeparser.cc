@@ -463,7 +463,7 @@ extern "C" {
       {"iso8601_to_timestamp", lua_iso8601_to_timestamp},
       {NULL, NULL}
     };
-    luaL_register(L, NULL, meta);
+    luaL_newlib(L, meta);
     return 1;
   }
 }
