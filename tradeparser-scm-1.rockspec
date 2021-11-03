@@ -2,7 +2,7 @@ package = 'tradeparser'
 version = 'scm-1'
 
 source  = {
-    url    = 'git://github.com/tarantool/tradeparser.git';
+    url    = 'git+https://github.com/tarantool/tradeparser.git';
     branch = 'master';
 }
 
