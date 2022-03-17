@@ -1,5 +1,14 @@
 # Fast specialized XML trade parser
 
+## Deprecation note
+
+This is not a general purpose module: the parser is specialized for particular
+input XML format. We suggest more general [luarapidxml][luarapidxml] solution.
+
+[luarapidxml]: https://github.com/tarantool/luarapidxml
+
+## Overview
+
 This parser consumes equity trades in a proprietory format and turns
 them into Lua dictionaries. The primary feature of this parser is
 speed. It can do 200 MB/sec on a single CPU core.
